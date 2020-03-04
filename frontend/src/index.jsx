@@ -60,13 +60,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      greeting: '',
+	greeting: '',
+	events: []
     };
   }
 
   async componentDidMount() {
-    const response = await getGreetingFromBackend();
-    this.setState({ greeting: response.greeting });
+      const response = await getGreetingFromBackend();
+      const events = await 
+      
+      this.setState({ greeting: response.greeting,events: events.results });
   }
 
   render() {
