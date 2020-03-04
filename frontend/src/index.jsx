@@ -61,7 +61,7 @@ class App extends Component {
     super(props);
     this.state = {
 	greeting: '',
-	events: []
+	events: [],
     };
   }
 
@@ -76,7 +76,10 @@ class App extends Component {
       return (
 	 <div>
 	<BackendGreeting greeting={this.state.greeting} />
-	<BackendEvent temperature={5}/>
+	{this.state.events.map( (event) => (
+	 <BackendEvent temperature={5}/>   
+	) )}
+	
 	  </div>
       );
   }
