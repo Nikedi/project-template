@@ -41,12 +41,14 @@ const BackendGreeting = (props) => (
 );
 
 const BackendEvent = (props) => {
+    return(
 	<div>
 	<p>
 	Temperature: {props.temperature}
 	</p>
 	</div>
-}
+
+    )}
 
 BackendGreeting.propTypes = {
     greeting: PropTypes.string,
@@ -67,8 +69,8 @@ class App extends Component {
 
   async componentDidMount() {
       const response = await getGreetingFromBackend();
-      const events = await 
-      
+      const events = await getEvents();
+      console.log(events)
       this.setState({ greeting: response.greeting,events: events.results });
   }
 
