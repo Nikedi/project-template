@@ -77,7 +77,6 @@ class App extends Component {
   render() {
       return (
 	  <>
-
 	<Table events={this.state.events}/>
 	  </>
       );
