@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import {Table} from './components/tempTable.jsx'
 
 import './assets/stylesheets/style.css';
 
@@ -47,7 +48,6 @@ const BackendEvent = (props) => {
 	Temperature: {props.temperature}
 	</p>
 	</div>
-
     )}
 
 BackendGreeting.propTypes = {
@@ -76,13 +76,10 @@ class App extends Component {
 
   render() {
       return (
-	 <div>
-	<BackendGreeting greeting={this.state.greeting} />
-	{this.state.events.map( (event) => (
-	 <BackendEvent temperature={5}/>   
-	) )}
-	
-	  </div>
+	  <>
+
+	<Table events={this.state.events}/>
+	  </>
       );
   }
 }
