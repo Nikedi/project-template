@@ -39,12 +39,13 @@ const getData = (events) => ({
 	data: events.slice(events.length - 100).map(event => {
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
-	    console.log(temperature)
+	    console.log(events)
 	    return {
 		x: timestamp,
 		y: temperature
 	    }
-	}).sort(function(a,b){return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()})
+	//})
+	}).sort((a,b) => new Date(a.timestamp).valueOf() - new Date(b.timestamp).valueOf())
     }
   ]
 })
