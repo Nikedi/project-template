@@ -44,7 +44,7 @@ const getData = (events) => ({
 		x: timestamp,
 		y: temperature
 	    }
-	}).sort(function(a,b){return new Date(b["Timestamp"]).getTime() - new Date(a["Timestamp"]).getTime()})
+	}).sort(function(a,b){return new Date(a["Timestamp"]).getTime() - new Date(b["Timestamp"]).getTime()})
     }
   ]
 })
