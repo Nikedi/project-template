@@ -36,7 +36,7 @@ const getData = (events) => ({
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-	data: events.slice(events.length - 100).map(event => {
+	data: events.sort(function(a,b){return new Date(a["Timestamp"]).getTime() - new Date(b["Timestamp"]).getTime()}).slice(events.length - 100).map(event => {
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
 	    console.log(temperature)
