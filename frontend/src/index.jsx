@@ -44,7 +44,7 @@ const getData = (events) => ({
 		x: timestamp,
 		y: temperature
 	    }
-	})
+	}).sort(function(a,b){return new Date(b["Timestamp"]).getTime() - new Date(a["Timestamp"]).getTime()})
     }
   ]
 })
@@ -106,8 +106,8 @@ class App extends Component {
   async componentDidMount() {
       const response = await getGreetingFromBackend();
       const events = await getEvents();
-      console.log(events)
-      this.setState({ greeting: response.greeting,events: events.results.sort(function(a,b){return new Date(b["Timestamp"]).getTime() - new Date(a["Timestamp"]).getTime()}) });
+      console.log(events.results)
+      this.setState({ greeting: response.greeting,events: events.results });
   }
     render() {
 	console.log(this.state.events)
