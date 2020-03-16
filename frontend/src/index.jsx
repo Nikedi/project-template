@@ -36,7 +36,7 @@ const getData = (events) => ({
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-	data: events.sort(function(a,b){return new Date(a["Timestamp"]).getTime() - new Date(b["Timestamp"]).getTime()}).slice(events.length - 100).map(event => {
+	data: events.slice(events.length - 100).map(event => {
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
 	    console.log(temperature)
@@ -114,7 +114,7 @@ class App extends Component {
       return (
 	  <>
 	    <Line
-	      data={getData(this.state.events)}
+	      data={getData(this.state.events.sort(function(a,b){return new Date(b["Timestamp"]).getTime() - new Date(a["Timestamp"]).getTime()}))}
 	      options={{
 		  scales: {
 		      xAxes:[{
