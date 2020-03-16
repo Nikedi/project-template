@@ -107,7 +107,7 @@ class App extends Component {
       const response = await getGreetingFromBackend();
       const events = await getEvents();
       console.log(events)
-      this.setState({ greeting: response.greeting,events: events.results.sort(function(a,b){return new Date(a["Timestamp"]).getTime() - new Date(b["Timestamp"]).getTime()}) });
+      this.setState({ greeting: response.greeting,events: events.results.sort(function(a,b){return new Date(b["Timestamp"]).getTime() - new Date(a["Timestamp"]).getTime()}) });
   }
     render() {
 	console.log(this.state.events)
