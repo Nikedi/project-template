@@ -64,7 +64,7 @@ const getGreetingFromBackend = async () => {
 const getEvents = async () => {
     const url = `${backendUrl}/api/events`
     const response = await fetch(url)
-    return response.json().sort(function(a,b){return new Date(a["Timestamp"]).valueOf() - new Date(b["Timestamp"]).valueOf()})
+    return response.json()
 }
 
 const BackendGreeting = (props) => (
@@ -107,7 +107,7 @@ class App extends Component {
       const response = await getGreetingFromBackend();
       const events = await getEvents();
       console.log(events)
-      this.setState({ greeting: response.greeting,events: events.results });
+      this.setState({ greeting: response.greeting,events: events.results.sort(function(a,b){return new Date(a["Timestamp"]).getTime() - new Date(b["Timestamp"]).getTime()}) });
   }
     render() {
 	console.log(this.state.events)
