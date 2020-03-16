@@ -110,6 +110,7 @@ class App extends Component {
       this.setState({ greeting: response.greeting,events: events.results });
   }
     render() {
+	console.log(this.state.events)
       return (
 	  <>
 	    <Line
