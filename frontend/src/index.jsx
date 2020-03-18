@@ -14,25 +14,25 @@ const backendUrl = `http://${baseUrl}:${BACKEND_PORT}`;
 
 /* ADD YOUR CODE AFTER THIS LINE */
 
-const getMinuteAverage = (data) => ({
+function getMinuteAverage(data) {
     let currentMinute;
-    let totalAmount;
-    let numOfCases;
+    let totalAmount = 0;
+    let numOfCases = 0;
     let newData=[];
-    for(let i=0;i<data.length){
+    for(let i=0;i<data.length;i++){
 	let thisMinute = new Date(data[i].timestamp).getMinutes()
 	if(currentMinute === thisMinute){
 	    totalAmount += data.temperature
 	    numOfCases += 1
 	}else{
-	    newData.append({"timestamp":data[i].timestamp,"temperature":totalAmount/numOfCases})
+	    newData.push({"timestamp":data[i].timestamp,"temperature":totalAmount/numOfCases})
 	    numOfCases = 1
 	    totalAmount = data.temperature
 	    currentMinute = thisMinute
 	}
     }
     return data
-})
+}
 
 const getData = (events) => ({
 
