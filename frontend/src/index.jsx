@@ -16,11 +16,12 @@ const backendUrl = `http://${baseUrl}:${BACKEND_PORT}`;
 
 function getMinuteAverage(data) {
     let currentMinute;
-    let totalAmount = 0.0;
-    let numOfCases = 1;
+    let totalAmount;
+    let numOfCases;
     let newData=[];
     for(let i=0;i<data.length;i++){
 	let thisMinute = new Date(data[i].timestamp).getMinutes()
+	console.log(data[i].timestamp + " : " + thisMinute)
 	if(currentMinute === thisMinute){
 	    totalAmount += data[i].temperature
 	    numOfCases += 1
