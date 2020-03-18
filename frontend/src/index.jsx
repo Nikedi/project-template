@@ -25,7 +25,7 @@ function getMinuteAverage(data) {
 	    totalAmount += data[i].temperature
 	    numOfCases += 1
 	}else{
-	    newData.push({"timestamp":data[i].timestamp,"temperature":totalAmount/numOfCases})
+	    newData.push({"timestamp":data[i].timestamp,"temperature":(totalAmount/numOfCases).toFixed(2)})
 	    numOfCases = 1
 	    totalAmount = data[i].temperature
 	    currentMinute = thisMinute
