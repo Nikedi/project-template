@@ -57,7 +57,7 @@ const getData = (events) => ({
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-	data: getMinuteAverage(events.sort(function (a,b) {return new Date(a.x) - new Date(b.x)})).map(event => {
+	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.x) - new Date(b.x)})).slice(-60).map(event => {
 	    console.log(event)
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
