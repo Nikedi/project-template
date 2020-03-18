@@ -36,16 +36,13 @@ const getData = (events) => ({
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-	data: events.slice(events.length - 100).map(event => {
+	data: events.sort(function (a,b) {return new Date(a.x) - new Date(b.x)}).slice(events.length - 100).map(event => {
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
-	    console.log(events)
 	    return {
 		x: timestamp,
 		y: temperature
 	    }
-	}).sort(function (a,b) {
-	    return new Date(a.x) - new Date(b.x)
 	})
     }
   ]
@@ -108,11 +105,9 @@ class App extends Component {
   async componentDidMount() {
       const response = await getGreetingFromBackend();
       const events = await getEvents();
-      console.log(events.results)
       this.setState({ greeting: response.greeting,events: events.results });
   }
     render() {
-	console.log(this.state.events)
       return (
 	  <>
 	    <Line
