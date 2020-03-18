@@ -21,7 +21,6 @@ function getMinuteAverage(data) {
     let newData=[];
     for(let i=0;i<data.length;i++){
 	let thisMinute = new Date(data[i].timestamp).getMinutes()
-	console.log(data[i].timestamp + " : " + thisMinute)
 	if(currentMinute === thisMinute){
 	    totalAmount += data[i].temperature
 	    numOfCases += 1
@@ -32,7 +31,6 @@ function getMinuteAverage(data) {
 	    currentMinute = thisMinute
 	}
     }
-    console.log(newData)
     return newData
 }
 
@@ -59,7 +57,6 @@ const getData = (events) => ({
       pointRadius: 1,
       pointHitRadius: 10,
 	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)})).slice(-60).map(event => {
-	    console.log(event)
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
 	    return {
