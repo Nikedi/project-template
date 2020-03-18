@@ -14,6 +14,26 @@ const backendUrl = `http://${baseUrl}:${BACKEND_PORT}`;
 
 /* ADD YOUR CODE AFTER THIS LINE */
 
+const getMinuteAverage = (data) => ({
+    let currentMinute;
+    let totalAmount;
+    let numOfCases;
+    let newData=[];
+    for(let i=0;i<data.length){
+	let thisMinute = new Date(data[i].timestamp).getMinutes()
+	if(currentMinute === thisMinute){
+	    totalAmount += data.temperature
+	    numOfCases += 1
+	}else{
+	    newData.append({"timestamp":data[i].timestamp,"temperature":totalAmount/numOfCases})
+	    numOfCases = 1
+	    totalAmount = data.temperature
+	    currentMinute = thisMinute
+	}
+    }
+    return data
+})
+
 const getData = (events) => ({
 
   datasets: [
@@ -36,7 +56,7 @@ const getData = (events) => ({
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-	data: events.sort(function (a,b) {return new Date(a.x) - new Date(b.x)}).slice(events.length - 100).map(event => {
+	data: getMinuteAverage(events.sort(function (a,b) {return new Date(a.x) - new Date(b.x)})).slice(events.length - 100).map(event => {
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
 	    return {
