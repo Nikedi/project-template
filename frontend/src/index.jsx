@@ -16,7 +16,7 @@ const backendUrl = `http://${baseUrl}:${BACKEND_PORT}`;
 
 
 
-function getMinuteAverage(data) {
+function getMinuteAverage(data,label) {
     let currentMinute;
     let totalAmount;
     let numOfCases;
@@ -24,12 +24,12 @@ function getMinuteAverage(data) {
     for(let i=0;i<data.length;i++){
 	let thisMinute = new Date(data[i].timestamp).getMinutes()
 	if(currentMinute === thisMinute){
-	    totalAmount += data[i].temperature
+	    totalAmount += data[i][label]
 	    numOfCases += 1
 	}else{
-	    newData.push({"timestamp":data[i].timestamp,"temperature":(totalAmount/numOfCases).toFixed(2)})
+	    newData.push({"timestamp":data[i].timestamp,[label]:(totalAmount/numOfCases).toFixed(2)})
 	    numOfCases = 1
-	    totalAmount = data[i].temperature
+	    totalAmount = data[i][label]
 	    currentMinute = thisMinute
 	}
     }
@@ -40,26 +40,10 @@ const getData = (events,timeframeMinutes) => ({
 
   datasets: [
     {
-      label: timeframeMinutes + " minutes",
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)})).slice(-timeframeMinutes).map(event => {
-	    console.log(timeframeMinutes)
+	label: "temperature",
+	fill: true,
+	backgroundColor: "rgba(300,10,100,0.5)",
+	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)}),"temperature").slice(-timeframeMinutes).map(event => {
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
 	    return {
@@ -67,7 +51,20 @@ const getData = (events,timeframeMinutes) => ({
 		y: temperature
 	    }
 	})
-    }
+    },
+      {
+	label: "humidity",
+	fill: true,
+	  backgroundColor: "rgba(100,100,300,0.5)",
+	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)}),"humidity").slice(-timeframeMinutes).map(event => {
+	    const timestamp = event.timestamp
+	    const humidity = event.humidity
+	    return {
+		x: timestamp,
+		y: humidity+5
+	    }
+	})
+      }       
   ]
 })
 
@@ -123,7 +120,6 @@ class App extends Component {
 	greeting: '',
 	events: [],
 	timeframe: 60,
-	tmptime: '',
     };
   }
 
@@ -150,8 +146,25 @@ class App extends Component {
 		      scales: {
 			  xAxes:[{
 			      type: 'time',
-			      distribution: 'series',  
-			  }]
+			      distribution: 'series',
+			      gridLines:[{
+				  display: false,
+			      }],
+			      ticks:{
+				  callback:function(value,index,values){
+				      let date = ""
+				      if(value.length > 7){
+					  date = value.split(" ")[0].split(":")
+					  date = date[0]+":"+date[1]+value.split(" ")[1]
+				      }
+				      else{
+					  date = value
+				      }
+				      return date;
+				  },	  
+			      }
+			  }],
+			  
 		      }
 		  }}
 		  />
