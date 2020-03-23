@@ -14,6 +14,8 @@ const backendUrl = `http://${baseUrl}:${BACKEND_PORT}`;
 
 /* ADD YOUR CODE AFTER THIS LINE */
 
+
+
 function getMinuteAverage(data) {
     let currentMinute;
     let totalAmount;
@@ -34,11 +36,11 @@ function getMinuteAverage(data) {
     return newData
 }
 
-const getData = (events) => ({
+const getData = (events,timeframeMinutes) => ({
 
   datasets: [
     {
-      label: 'My First dataset',
+      label: timeframeMinutes,
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -56,7 +58,8 @@ const getData = (events) => ({
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)})).slice(-60).map(event => {
+	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)})).slice(-timeframeMinutes).map(event => {
+	    console.log(timeframeMinutes)
 	    const timestamp = event.timestamp
 	    const temperature = event.temperature
 	    return {
@@ -119,36 +122,44 @@ class App extends Component {
     this.state = {
 	greeting: '',
 	events: [],
+	timeframe: 60,
     };
   }
 
   async componentDidMount() {
       const response = await getGreetingFromBackend();
       const events = await getEvents();
-      this.setState({ greeting: response.greeting,events: events.results });
+      this.setState({ greeting: response.greeting,events: events.results});
   }
+    
     render() {
-      return (
-	  <>
-	    <Line
-	      data={getData(this.state.events)}
-	      options={{
-		  scales: {
-		      xAxes:[{
-			  type: 'time',
-			  distribution: 'series',  
-		      }]
-		  }
-	      }}
-	      />
-	  </>
-      );
-  }
+	return (
+	    <>
+	      <button onClick={() => this.setState({timeframe: 60})}>Hour</button>
+	      <button onClick={() => this.setState({timeframe: 1440})}>Day </button>
+	      <button onClick={() => this.setState({timeframe: 10080})}>Week </button>
+	      <div className="line">
+		<Line
+		  data={getData(this.state.events,this.state.timeframe)}
+		  options={{
+		      maintainAspectRatio: false,
+		      scales: {
+			  xAxes:[{
+			      type: 'time',
+			      distribution: 'series',  
+			  }]
+		      }
+		  }}
+		  />
+	      </div>
+	    </>
+	);
+    }
 }
 
 /* DO NOT DELETE AFTER THIS LINE */
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root'),
+    <App />,
+    document.getElementById('root'),
 );
