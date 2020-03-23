@@ -40,7 +40,7 @@ const getData = (events,timeframeMinutes) => ({
 
   datasets: [
     {
-      label: timeframeMinutes,
+      label: timeframeMinutes + " minutes",
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -123,6 +123,7 @@ class App extends Component {
 	greeting: '',
 	events: [],
 	timeframe: 60,
+	tmptime: '',
     };
   }
 
@@ -131,6 +132,7 @@ class App extends Component {
       const events = await getEvents();
       this.setState({ greeting: response.greeting,events: events.results});
   }
+
     
     render() {
 	return (
@@ -138,7 +140,9 @@ class App extends Component {
 	      <button onClick={() => this.setState({timeframe: 60})}>Hour</button>
 	      <button onClick={() => this.setState({timeframe: 1440})}>Day </button>
 	      <button onClick={() => this.setState({timeframe: 10080})}>Week </button>
-	      <div className="line">
+	      <input type="text" pattern="[0-9]*"
+		     onChange={(minute) => this.setState({timeframe: parseInt(minute.target.value)})}/>
+ 	      <div className="line">
 		<Line
 		  data={getData(this.state.events,this.state.timeframe)}
 		  options={{
