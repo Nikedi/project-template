@@ -41,6 +41,7 @@ const getData = (events,timeframeMinutes) => ({
   datasets: [
     {
 	label: "temperature",
+	yAxisID: "temperature",
 	fill: true,
 	backgroundColor: "rgba(300,10,100,0.5)",
 	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)}),"temperature").slice(-timeframeMinutes).map(event => {
@@ -53,17 +54,18 @@ const getData = (events,timeframeMinutes) => ({
 	})
     },
       {
-	label: "humidity",
-	fill: true,
+	  label: "humidity",
+	  yAxisID: "humidity",
+	  fill: true,
 	  backgroundColor: "rgba(100,100,300,0.5)",
-	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)}),"humidity").slice(-timeframeMinutes).map(event => {
-	    const timestamp = event.timestamp
-	    const humidity = event.humidity
-	    return {
-		x: timestamp,
-		y: humidity+5
-	    }
-	})
+	  data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)}),"humidity").slice(-timeframeMinutes).map(event => {
+	      const timestamp = event.timestamp
+	      const humidity = event.humidity
+	      return {
+		  x: timestamp,
+		  y: humidity+5
+	      }
+	  })
       }       
   ]
 })
@@ -144,26 +146,46 @@ class App extends Component {
 		  options={{
 		      maintainAspectRatio: false,
 		      scales: {
-			  xAxes:[{
-			      type: 'time',
-			      distribution: 'series',
-			      gridLines:[{
-				  display: false,
+			  yAxes:[
+			      {
+				  id: "temperature",
+				  position: "left",
+				  type: "linear",
+				  scaleLabel:{
+				      display: true,
+				      labelString: "Temperature",
+				  },
+			      },
+			      {
+				  id: "humidity",
+				  position: "right",
+				  type: "linear",
+				  scaleLabel:{
+				      display: true,
+				      labelString: "Humidity",
+				  },
 			      }],
-			      ticks:{
-				  callback:function(value,index,values){
-				      let date = ""
-				      if(value.length > 7){
-					  date = value.split(" ")[0].split(":")
-					  date = date[0]+":"+date[1]+value.split(" ")[1]
-				      }
-				      else{
-					  date = value
-				      }
-				      return date;
-				  },	  
+			  xAxes:[
+			      {
+				  type: 'time',
+				  time:{
+				      displayFormats: {
+					  minute: "H:mm",
+					  hour: "H:mm",
+				      },
+				      minUnit: "minute"
+				  },
+				  distribution: 'series',
+				  gridLines:[{
+				      display: false,
+				  }],
+				  ticks:{
+				      callback:function(value,index,values){
+					  return value;
+				      },	  
+				  }
 			      }
-			  }],
+			  ],
 			  
 		      }
 		  }}
