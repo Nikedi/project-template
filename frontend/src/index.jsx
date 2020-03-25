@@ -14,8 +14,6 @@ const backendUrl = `http://${baseUrl}:${BACKEND_PORT}`;
 
 /* ADD YOUR CODE AFTER THIS LINE */
 
-
-
 function getMinuteAverage(data,label) {
     let currentMinute;
     let totalAmount;
@@ -40,8 +38,7 @@ const getData = (events,timeframeMinutes) => ({
 
   datasets: [
     {
-	label: "temperature",
-	yAxisID: "temperature",
+	label: "temperature C°",
 	fill: true,
 	backgroundColor: "rgba(300,10,100,0.5)",
 	data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)}),"temperature").slice(-timeframeMinutes).map(event => {
@@ -54,8 +51,7 @@ const getData = (events,timeframeMinutes) => ({
 	})
     },
       {
-	  label: "humidity",
-	  yAxisID: "humidity",
+	  label: "humidity %",
 	  fill: true,
 	  backgroundColor: "rgba(100,100,300,0.5)",
 	  data: getMinuteAverage(events.sort(function(a,b) {return new Date(a.timestamp) - new Date(b.timestamp)}),"humidity").slice(-timeframeMinutes).map(event => {
@@ -148,21 +144,10 @@ class App extends Component {
 		      scales: {
 			  yAxes:[
 			      {
-				  id: "temperature",
 				  position: "left",
 				  type: "linear",
-				  scaleLabel:{
-				      display: true,
-				      labelString: "Temperature",
-				  },
-			      },
-			      {
-				  id: "humidity",
-				  position: "right",
-				  type: "linear",
-				  scaleLabel:{
-				      display: true,
-				      labelString: "Humidity",
+				  ticks: {
+				      min: 15
 				  },
 			      }],
 			  xAxes:[
