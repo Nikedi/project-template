@@ -35,7 +35,6 @@ function getMinuteAverage(data,label) {
 }
 
 const getData = (events,timeframeMinutes) => ({
-
   datasets: [
     {
 	label: "temperature C°",
@@ -94,14 +93,6 @@ const BackendGreeting = (props) => (
   </div>
 );
 
-const BackendEvent = (props) => {
-    return(
-	<div>
-	<p>
-	Temperature: {props.temperature}
-	</p>
-	</div>
-    )}
 
 BackendGreeting.propTypes = {
     greeting: PropTypes.string,
@@ -134,9 +125,9 @@ class App extends Component {
 	      <button onClick={() => this.setState({timeframe: 60})}>Hour</button>
 	      <button onClick={() => this.setState({timeframe: 1440})}>Day </button>
 	      <button onClick={() => this.setState({timeframe: 10080})}>Week </button>
-	      <input type="text" pattern="[0-9]*"
-		     onChange={(minute) => this.setState({timeframe: parseInt(minute.target.value)})}/>
- 	      <div className="line">
+	      <input type="text" pattern="[0-9]*" onChange={(minute) => this.setState({timeframe: parseInt(minute.target.value)})}></input>
+	      <p>{"Current timeframe: " + this.state.timeframe + " minutes"}</p>
+	      <div className="line">
 		<Line
 		  data={getData(this.state.events,this.state.timeframe)}
 		  options={{
@@ -164,11 +155,6 @@ class App extends Component {
 				  gridLines:[{
 				      display: false,
 				  }],
-				  ticks:{
-				      callback:function(value,index,values){
-					  return value;
-				      },	  
-				  }
 			      }
 			  ],
 			  
